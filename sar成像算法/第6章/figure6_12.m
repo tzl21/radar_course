@@ -102,7 +102,7 @@ tic
 wait_title = waitbar(0,'开始生成雷达原始回波数据 ...');  
 pause(1);                                                     
 st_tt = zeros(Naz,Nrg);
-for i = 1 : Ntarget
+for i =  1: Ntarget
     %  计算目标点的瞬时斜距
     R_eta = sqrt( NPosition(i,1)^2 +...
                   Vr^2*(t_etaY-Tar_t_eta_0(i)).^2 ); 
@@ -193,7 +193,8 @@ Ka = 2*Vr^2*cos(theta_r_c)^2./(lambda*r_tauX);
 Haf = exp(-1j*pi*f_etaY.^2./Ka);
 Haf_offset = exp(-1j*2*pi*f_etaY.*t_eta_c);
 %  匹配滤波
-Soutf_tf = Srcmf_tf.*Haf.*Haf_offset;
+% Soutf_tf = Srcmf_tf.*Haf.*Haf_offset;
+Soutf_tf = Srcmf_tf*1;
 soutt_tt = ifft(Soutf_tf,Naz,1);
 %% 绘图
 figure(1)

@@ -110,6 +110,7 @@ xlabel('距离向(采样点)'),ylabel('方位向(采样点)'),title('(c)相位')
 %% 信号设置：二维FFT
 S0 = st_tt.*exp(-1i*2*pi*f_eta_c*t_etaY); %对齐到方位向多普勒中心；
 S2df = fftshift(fft2(fftshift(S0)));
+% S2df = (fft2((S0)));
 % 绘图：二维fft
 figure(2)                
 subplot(111),imagesc( abs(S2df))             
@@ -126,9 +127,10 @@ subplot(111),imagesc( abs(S_RFM))
 xlabel('距离频率(采样点)'),ylabel('方位频率(采样点)'),title('一致压缩');
 % 绘图：二维IFFT
 figure(4)                
-subplot(111),imagesc( abs(ifftshift(ifft2(ifftshift(S_RFM)))));             
+subplot(211),imagesc( abs(ifftshift(ifft2(ifftshift(S_RFM)))));             
 xlabel('距离向(采样点)'),ylabel('方位向(采样点)'),title('二维IFFT（无stolt插值）');
-
+subplot(212),imagesc( abs((ifft(ifftshift(S_RFM),Nrg,2))));             
+xlabel('距离向(采样点)'),ylabel('方位向(采样点)'),title('RD（无stolt插值）');
 
 %% 二维频域进行stolt插值
 % 频率轴映射

@@ -102,7 +102,7 @@ tic
 wait_title = waitbar(0,'开始生成雷达原始回波数据 ...');  
 pause(1);                                                     
 st_tt = zeros(Naz,Nrg);
-for i = 1 : Ntarget
+for i = 2
     %  计算目标点的瞬时斜距
     R_eta = sqrt( NPosition(i,1)^2 +...
                   Vr^2*(t_etaY-Tar_t_eta_0(i)).^2 ); 
@@ -132,10 +132,19 @@ for i = 1 : Ntarget
     Display_Str  = ['Computation Progress ... ',Display_Data,'%',' --- ',...
                     'Using Time: ',Time_Disp];
     waitbar(i/Ntarget,wait_title,Display_Str)
+
+    figure(i)
+    subplot(121),imagesc(real(st_tt_tar))
+    xlabel('距离时间(采样点)'),ylabel('方位频率(采样点)'),title('(a)实部')
+    subplot(122),imagesc( abs(st_tt_tar))
+    xlabel('距离时间(采样点)'),ylabel('方位频率(采样点)'),title('(b)幅度')
+    sgtitle('图6.5 低斜视角下的方位FFT')
 end
 pause(1);
 close(wait_title);
 toc
+
+
 %% 信号设置：一次距离压缩                  
 %  信号变换：方式三：根据脉冲频谱特性直接在频域生成频域匹配滤波器
 %  加窗函数
@@ -146,10 +155,17 @@ Hrf = (abs(f_tau_X)<=Bw/2).*Window.*exp(+1j*pi*f_tau_X.^2/Kr);
 Sf_ft = fft(st_tt,Nrg,2);
 Srf_tf = Sf_ft.*Hrf;
 srt_tt = ifft(Srf_tf,Nrg,2);
+
+figure(5)
+subplot(121),imagesc(real(srt_tt))
+xlabel('距离时间(采样点)'),ylabel('方位频率(采样点)'),title('(a)实部')
+subplot(122),imagesc( abs(srt_tt))
+xlabel('距离时间(采样点)'),ylabel('方位频率(采样点)'),title('(b)幅度')
+sgtitle('图6.5 低斜视角下的方位FFT')
 %% 信号设置：方位向傅里叶变换
 Saf_tf = fft(srt_tt,Naz,1);
 %% 绘图
-figure(1)
+figure(6)
 subplot(121),imagesc(real(Saf_tf))
 xlabel('距离时间(采样点)'),ylabel('方位频率(采样点)'),title('(a)实部')
 subplot(122),imagesc( abs(Saf_tf))

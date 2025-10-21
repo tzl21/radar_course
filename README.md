@@ -1,1 +1,3 @@
-# radar
+# radar courses
+## SAR成像算法：Matlab 参考版本，不保证正确性。
+## x.0 : 《成像算法与实现》的对应章节的复现代码，基于Python实现
